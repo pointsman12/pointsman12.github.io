@@ -23,7 +23,7 @@
 <article class="post">
   <header class="post__header">
     <h1 class="post__title">{{ .Title }}</h1>
-    {{- if eq .Section "posts" }}
+    {{- if in (slice "posts" "translations") .Section }}
     <p class="meta">
       {{- if not .Date.IsZero }}
       <time datetime="{{ .Date.Format "2006-01-02" }}">{{ partial "date.html" .Date }}</time>
@@ -35,10 +35,15 @@
   <div class="prose">
     {{ .Content }}
   </div>
+  {{- /* للترجمات: رابط النص الأصلي واسم كاتبه، من سطري original و original_by */}}
+  {{- $by := .Params.original_by }}
+  {{- with .Params.original }}
+  <p class="source"><a href="{{ . }}">النص الأصلي</a>{{ with $by }}، بقلم {{ . }}{{ end }}</p>
+  {{- end }}
   {{- partial "tags.html" . }}
-  {{- if and (eq .Section "posts") (or site.Params.telegram site.Params.whatsapp site.Params.x) }}
+  {{- if and (in (slice "posts" "translations") .Section) (or site.Params.telegram site.Params.whatsapp site.Params.x) }}
   <aside class="follow">
-    <p>لتصلك التدوينات الجديدة:</p>
+    <p>ليصلك الجديد:</p>
     <p class="follow__links">{{ partial "follow.html" . }}</p>
   </aside>
   {{- end }}

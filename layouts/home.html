@@ -1,9 +1,9 @@
 {{ define "main" }}
-{{- $posts := where site.RegularPages "Section" "posts" }}
+{{- /* المتن: التدوينات والترجمات معًا. الهامش: الكتابات القصيرة */}}
+{{- $long := where site.RegularPages "Section" "in" (slice "posts" "translations") }}
 {{- $notes := where site.RegularPages "Section" "notes" }}
-{{- /* على الشاشات الواسعة: التدوينات في المتن والهوامش بجانبها، إذا وُجد النوعان */}}
-<div class="home{{ if and $posts $notes }} home--notes{{ end }}">
-  {{- with $posts }}
+<div class="home{{ if and $long $notes }} home--notes{{ end }}">
+  {{- with $long }}
   {{- $latest := index . 0 }}
   <article class="lead">
     <h2 class="lead__title"><a href="{{ $latest.RelPermalink }}">{{ $latest.Title }}</a></h2>
@@ -12,6 +12,9 @@
       <time datetime="{{ $latest.Date.Format "2006-01-02" }}">{{ partial "date.html" $latest.Date }}</time>
       {{- end }}
       <span>{{ partial "reading-time.html" $latest }}</span>
+      {{- if eq $latest.Section "translations" }}
+      <span>ترجمة</span>
+      {{- end }}
     </p>
     <div class="lead__summary prose">{{ $latest.Summary }}</div>
     {{- if $latest.Truncated }}
@@ -36,25 +39,30 @@
   </section>
   {{- end }}
 
-  {{- $rest := after 1 $posts }}
+  {{- $rest := after 1 $long }}
   {{- with first 8 $rest }}
   <section class="index" aria-labelledby="older-posts">
-    <h2 class="index__heading" id="older-posts">تدوينات سابقة</h2>
+    <h2 class="index__heading" id="older-posts">كتابات سابقة</h2>
     <ul class="entries">
       {{- range . }}
       {{ partial "entry.html" . }}
       {{- end }}
     </ul>
     {{- if gt (len $rest) 8 }}
-    {{- with site.GetPage "/posts" }}
-    <p class="index__all"><a href="{{ .RelPermalink }}">كل التدوينات</a></p>
-    {{- end }}
+    <p class="index__all">
+      {{- with site.GetPage "/posts" }}
+      <a href="{{ .RelPermalink }}">كل التدوينات</a>
+      {{- end }}
+      {{- with site.GetPage "/translations" }}
+      <a href="{{ .RelPermalink }}">كل الترجمات</a>
+      {{- end }}
+    </p>
     {{- end }}
   </section>
   {{- end }}
 
-  {{- if and (not $posts) (not $notes) }}
-  <p class="empty">لا توجد كتابات بعد. أضف أول تدوينة في مجلد <code>content/posts</code>، أو أول هامش في <code>content/notes</code>.</p>
+  {{- if and (not $long) (not $notes) }}
+  <p class="empty">لا توجد كتابات بعد.</p>
   {{- end }}
 </div>
 {{ end }}

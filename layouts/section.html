@@ -15,7 +15,7 @@
     {{- end }}
   </div>
   {{- else }}
-  <p class="empty">لا توجد هوامش بعد. أضف أول هامش في مجلد <code>content/notes</code>.</p>
+  <p class="empty">لا توجد كتابات هنا بعد.</p>
   {{- end }}
   {{- if or $pager.HasPrev $pager.HasNext }}
   <nav class="pager" aria-label="صفحات {{ .Title }}">
@@ -39,7 +39,7 @@
     </ul>
   </section>
   {{- else }}
-  <p class="empty">لا توجد تدوينات هنا بعد.</p>
+  <p class="empty">لا توجد كتابات هنا بعد.</p>
   {{- end }}
 {{- end }}
 {{ end }}

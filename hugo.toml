@@ -28,7 +28,7 @@ enableRobotsTXT = true
   author = "عبدالرحمن"
 
   # سطر يعرّف بالمدونة تحت اسمها في الصفحة الرئيسية، ويظهر في نتائج البحث.
-  description = "يعني.. شيء من هنا وهناك"
+  description = "يعني.. شيء من هنا وهناك."
 
   # بريدك ليظهر رابط «راسلني» في أسفل الموقع. اتركه فارغًا لإخفائه.
   email = ""
@@ -57,19 +57,24 @@ enableRobotsTXT = true
 
 # روابط القائمة في أعلى الموقع، مرتبة حسب weight.
 [[menus.main]]
-  name = "التدوينات"
+  name = "تدوينات"
   pageRef = "/posts"
   weight = 10
 
 [[menus.main]]
-  name = "هوامش"
-  pageRef = "/notes"
+  name = "ترجمات"
+  pageRef = "/translations"
   weight = 20
+
+[[menus.main]]
+  name = "شَعَث"
+  pageRef = "/notes"
+  weight = 30
 
 [[menus.main]]
   name = "عنّي"
   pageRef = "/about"
-  weight = 30
+  weight = 40
 
 [taxonomies]
   tag = "tags"

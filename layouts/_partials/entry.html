@@ -4,6 +4,6 @@
   <p class="entry__desc">{{ . }}</p>
   {{- end }}
   {{- if not .Date.IsZero }}
-  <time class="entry__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ partial "date.html" .Date }}</time>
+  <p class="entry__date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ partial "date.html" .Date }}</time>{{ if eq .Section "translations" }}<span>ترجمة</span>{{ end }}</p>
   {{- end }}
 </li>
