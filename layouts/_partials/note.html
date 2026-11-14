@@ -1,0 +1,28 @@
+{{- /*
+  هامش واحد في قائمة: التاريخ، ثم العنوان إن وُجد، ثم النص كاملًا
+  (أو مقتطفًا منه إذا كان طويلًا). يُستدعى هكذا:
+  partial "note.html" (dict "page" . "heading" "h2")
+*/ -}}
+{{- $p := .page }}
+<article class="note">
+  {{- if not $p.Date.IsZero }}
+  <p class="note__date"><a href="{{ $p.RelPermalink }}"><time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ partial "date.html" $p.Date }}</time></a></p>
+  {{- end }}
+  {{- with $p.Title }}
+    {{- if eq $.heading "h2" }}
+  <h2 class="note__title"><a href="{{ $p.RelPermalink }}">{{ . }}</a></h2>
+    {{- else }}
+  <h3 class="note__title"><a href="{{ $p.RelPermalink }}">{{ . }}</a></h3>
+    {{- end }}
+  {{- end }}
+  <div class="note__body prose">
+    {{- if $p.Truncated }}
+    {{ $p.Summary }}
+    {{- else }}
+    {{ $p.Content }}
+    {{- end }}
+  </div>
+  {{- if $p.Truncated }}
+  <a class="note__more" href="{{ $p.RelPermalink }}">تكملة الهامش</a>
+  {{- end }}
+</article>

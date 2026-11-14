@@ -1,0 +1,9 @@
+<li class="entry{{ if eq .Section "notes" }} entry--note{{ end }}">
+  <a class="entry__title" href="{{ .RelPermalink }}">{{ with .Title }}{{ . }}{{ else }}{{ .Summary | plainify | htmlUnescape | truncate 80 | printf "%s" }}{{ end }}</a>
+  {{- with .Description }}
+  <p class="entry__desc">{{ . }}</p>
+  {{- end }}
+  {{- if not .Date.IsZero }}
+  <time class="entry__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ partial "date.html" .Date }}</time>
+  {{- end }}
+</li>

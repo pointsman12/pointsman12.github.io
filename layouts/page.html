@@ -1,0 +1,47 @@
+{{ define "main" }}
+{{- if eq .Section "notes" }}
+<article class="post post--note">
+  <header class="note-head">
+    {{- with site.GetPage "/notes" }}
+    <p class="note-head__section"><a href="{{ .RelPermalink }}">{{ .Title }}</a></p>
+    {{- end }}
+    {{- with .Title }}
+    <h1 class="note-head__title">{{ . }}</h1>
+    {{- else }}
+    <h1 class="visually-hidden">{{ .Summary | plainify | htmlUnescape | truncate 60 | printf "%s" }}</h1>
+    {{- end }}
+    {{- if not .Date.IsZero }}
+    <p class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ partial "date.html" .Date }}</time></p>
+    {{- end }}
+  </header>
+  <div class="prose">
+    {{ .Content }}
+  </div>
+  {{- partial "tags.html" . }}
+</article>
+{{- else }}
+<article class="post">
+  <header class="post__header">
+    <h1 class="post__title">{{ .Title }}</h1>
+    {{- if eq .Section "posts" }}
+    <p class="meta">
+      {{- if not .Date.IsZero }}
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ partial "date.html" .Date }}</time>
+      {{- end }}
+      <span>{{ partial "reading-time.html" . }}</span>
+    </p>
+    {{- end }}
+  </header>
+  <div class="prose">
+    {{ .Content }}
+  </div>
+  {{- partial "tags.html" . }}
+  {{- if and (eq .Section "posts") (or site.Params.telegram site.Params.whatsapp site.Params.x) }}
+  <aside class="follow">
+    <p>لتصلك التدوينات الجديدة:</p>
+    <p class="follow__links">{{ partial "follow.html" . }}</p>
+  </aside>
+  {{- end }}
+</article>
+{{- end }}
+{{ end }}

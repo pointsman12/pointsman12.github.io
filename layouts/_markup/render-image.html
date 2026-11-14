@@ -1,0 +1,15 @@
+{{- /*
+  الصور: يكفي كتابة اسم الصورة، مثل ![وصف](desk.jpg)، ما دامت الصورة في مجلد static/images.
+  ويعمل هذا أيضًا مع الصور التي ترفعها إضافة Enveloppe من Obsidian.
+*/ -}}
+{{- $src := .Destination -}}
+{{- $remote := or (hasPrefix $src "http://") (hasPrefix $src "https://") (hasPrefix $src "//") (hasPrefix $src "data:") -}}
+{{- if not $remote -}}
+  {{- with .Page.Resources.Get $src -}}
+    {{- $src = .RelPermalink -}}
+  {{- else -}}
+    {{- $src = printf "images/%s" (path.Base $src) | relURL -}}
+  {{- end -}}
+{{- end -}}
+<img src="{{ $src }}" alt="{{ .PlainText }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy" decoding="async">
+{{- /**/ -}}

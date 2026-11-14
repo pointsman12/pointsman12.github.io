@@ -1,0 +1,60 @@
+{{ define "main" }}
+{{- $posts := where site.RegularPages "Section" "posts" }}
+{{- $notes := where site.RegularPages "Section" "notes" }}
+{{- /* على الشاشات الواسعة: التدوينات في المتن والهوامش بجانبها، إذا وُجد النوعان */}}
+<div class="home{{ if and $posts $notes }} home--notes{{ end }}">
+  {{- with $posts }}
+  {{- $latest := index . 0 }}
+  <article class="lead">
+    <h2 class="lead__title"><a href="{{ $latest.RelPermalink }}">{{ $latest.Title }}</a></h2>
+    <p class="meta">
+      {{- if not $latest.Date.IsZero }}
+      <time datetime="{{ $latest.Date.Format "2006-01-02" }}">{{ partial "date.html" $latest.Date }}</time>
+      {{- end }}
+      <span>{{ partial "reading-time.html" $latest }}</span>
+    </p>
+    <div class="lead__summary prose">{{ $latest.Summary }}</div>
+    {{- if $latest.Truncated }}
+    <a class="lead__more" href="{{ $latest.RelPermalink }}">تابِع القراءة</a>
+    {{- end }}
+  </article>
+  {{- end }}
+
+  {{- with first 6 $notes }}
+  <section class="margin" aria-labelledby="margin-heading">
+    {{- with site.GetPage "/notes" }}
+    <h2 class="margin__heading" id="margin-heading"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+    {{- end }}
+    {{- range . }}
+    {{ partial "note.html" (dict "page" . "heading" "h3") }}
+    {{- end }}
+    {{- if gt (len $notes) 6 }}
+    {{- with site.GetPage "/notes" }}
+    <p class="margin__all"><a href="{{ .RelPermalink }}">المزيد</a></p>
+    {{- end }}
+    {{- end }}
+  </section>
+  {{- end }}
+
+  {{- $rest := after 1 $posts }}
+  {{- with first 8 $rest }}
+  <section class="index" aria-labelledby="older-posts">
+    <h2 class="index__heading" id="older-posts">تدوينات سابقة</h2>
+    <ul class="entries">
+      {{- range . }}
+      {{ partial "entry.html" . }}
+      {{- end }}
+    </ul>
+    {{- if gt (len $rest) 8 }}
+    {{- with site.GetPage "/posts" }}
+    <p class="index__all"><a href="{{ .RelPermalink }}">كل التدوينات</a></p>
+    {{- end }}
+    {{- end }}
+  </section>
+  {{- end }}
+
+  {{- if and (not $posts) (not $notes) }}
+  <p class="empty">لا توجد كتابات بعد. أضف أول تدوينة في مجلد <code>content/posts</code>، أو أول هامش في <code>content/notes</code>.</p>
+  {{- end }}
+</div>
+{{ end }}

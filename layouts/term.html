@@ -1,0 +1,10 @@
+{{ define "main" }}
+<header class="page__header">
+  <h1>وسم «{{ .Title }}»</h1>
+</header>
+<ul class="entries">
+  {{- range .Pages }}
+  {{ partial "entry.html" . }}
+  {{- end }}
+</ul>
+{{ end }}

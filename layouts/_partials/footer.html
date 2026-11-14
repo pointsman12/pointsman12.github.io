@@ -1,0 +1,11 @@
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <p>© {{ partial "digits.html" (now.Format "2006") }} {{ site.Params.author }}</p>
+    <p class="site-footer__links">
+      {{- partial "follow.html" . }}
+      {{- with site.Params.email }}
+      <a href="mailto:{{ . }}">راسلني</a>
+      {{- end }}
+    </p>
+  </div>
+</footer>

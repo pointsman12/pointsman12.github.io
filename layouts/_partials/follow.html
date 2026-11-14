@@ -1,0 +1,13 @@
+{{- /* روابط المتابعة: القنوات المضافة في hugo.toml ثم RSS */ -}}
+{{- with site.Params.telegram }}
+<a href="{{ . }}">تيليجرام</a>
+{{- end }}
+{{- with site.Params.whatsapp }}
+<a href="{{ . }}">واتساب</a>
+{{- end }}
+{{- with site.Params.x }}
+<a href="{{ . }}">X</a>
+{{- end }}
+{{- with site.Home.OutputFormats.Get "rss" }}
+<a href="{{ .RelPermalink }}">RSS</a>
+{{- end }}

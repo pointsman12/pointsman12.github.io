@@ -1,0 +1,64 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+{{- /* اسم الصفحة: عنوانها، أو أول كلمات الهامش إذا كان بلا عنوان */}}
+{{- $name := .Title }}
+{{- if and (not $name) .IsPage }}
+  {{- $name = .Summary | plainify | htmlUnescape | truncate 60 | printf "%s" }}
+{{- end }}
+{{- $title := site.Title }}
+{{- if eq .Kind "404" }}
+  {{- $title = printf "صفحة غير موجودة | %s" site.Title }}
+{{- else if not .IsHome }}
+  {{- $title = printf "%s | %s" $name site.Title }}
+{{- end }}
+{{- $desc := site.Params.description }}
+{{- if .Description }}
+  {{- $desc = .Description }}
+{{- else if .IsPage }}
+  {{- $desc = .Summary | plainify | htmlUnescape | truncate 160 | printf "%s" }}
+{{- end }}
+<title>{{ $title }}</title>
+<meta name="description" content="{{ $desc }}">
+<link rel="canonical" href="{{ .Permalink }}">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fbfbf8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14171c" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
+{{- with site.Home.OutputFormats.Get "rss" }}
+<link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">
+{{- end }}
+{{- /* الخطوط حسب إعداد fonts في hugo.toml */}}
+{{- $fonts := dict "modern" "family=Alexandria:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700" "book" "family=Amiri:wght@400;700" "simple" "family=IBM+Plex+Sans+Arabic:wght@400;700" }}
+{{- with index $fonts (site.Params.fonts | default "modern") }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="{{ printf "https://fonts.googleapis.com/css2?%s&display=swap" . | safeURL }}">
+{{- end }}
+{{- with resources.Get "css/main.css" }}
+  {{- with . | minify | fingerprint }}
+<link rel="stylesheet" href="{{ .RelPermalink }}">
+  {{- end }}
+{{- end }}
+<meta property="og:site_name" content="{{ site.Title }}">
+<meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ $name }}{{ end }}">
+<meta property="og:description" content="{{ $desc }}">
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:locale" content="ar_AR">
+{{- $image := site.Params.share_image }}
+{{- with .Params.image }}
+  {{- $image = . }}
+{{- end }}
+{{- with $image }}
+  {{- $img := . }}
+  {{- if not (or (hasPrefix $img "http://") (hasPrefix $img "https://")) }}
+    {{- $img = printf "images/%s" (path.Base (strings.Trim $img "![]")) | absURL }}
+  {{- end }}
+<meta property="og:image" content="{{ $img }}">
+<meta name="twitter:card" content="summary_large_image">
+{{- else }}
+<meta name="twitter:card" content="summary">
+{{- end }}
+{{- with site.Params.google_verification }}
+<meta name="google-site-verification" content="{{ . }}">
+{{- end }}

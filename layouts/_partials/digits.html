@@ -1,0 +1,8 @@
+{{- /* يحوّل الأرقام إلى ١٢٣ إذا كان arabic_digits مفعّلًا في hugo.toml */ -}}
+{{- $s := string . -}}
+{{- if site.Params.arabic_digits -}}
+  {{- range $i, $d := slice "٠" "١" "٢" "٣" "٤" "٥" "٦" "٧" "٨" "٩" -}}
+    {{- $s = replace $s (string $i) $d -}}
+  {{- end -}}
+{{- end -}}
+{{- $s -}}

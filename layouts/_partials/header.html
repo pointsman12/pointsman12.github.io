@@ -1,0 +1,23 @@
+<header class="site-header">
+  <div class="site-header__inner">
+    {{- if .IsHome }}
+    <h1 class="site-title"><a href="{{ site.Home.RelPermalink }}" aria-current="page">{{ site.Title }}</a></h1>
+    {{- else }}
+    <p class="site-title"><a href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a></p>
+    {{- end }}
+    {{- with site.Menus.main }}
+    <nav class="site-nav" aria-label="أقسام المدونة">
+      <ul>
+        {{- range . }}
+        <li><a href="{{ .URL }}"{{ if eq $.RelPermalink .URL }} aria-current="page"{{ else if hasPrefix $.RelPermalink .URL }} class="is-active"{{ end }}>{{ .Name }}</a></li>
+        {{- end }}
+      </ul>
+    </nav>
+    {{- end }}
+    {{- if .IsHome }}
+    {{- with site.Params.description }}
+    <p class="site-description">{{ . }}</p>
+    {{- end }}
+    {{- end }}
+  </div>
+</header>

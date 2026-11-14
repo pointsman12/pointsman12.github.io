@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-fonts="{{ site.Params.fonts | default "modern" }}"{{ if site.Params.arabic_digits }} class="arabic-digits"{{ end }}>
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body>
+  <a class="skip-link" href="#main">انتقل إلى المحتوى</a>
+  {{ partial "header.html" . }}
+  <main id="main" class="page">
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "footer.html" . }}
+</body>
+</html>

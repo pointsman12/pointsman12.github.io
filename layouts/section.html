@@ -1,0 +1,45 @@
+{{ define "main" }}
+<header class="page__header">
+  <h1>{{ .Title }}</h1>
+  {{- with .Content }}
+  <div class="page__intro prose">{{ . }}</div>
+  {{- end }}
+</header>
+{{- if eq .Section "notes" }}
+  {{- /* الهوامش: تظهر كاملة، ٢٠ في كل صفحة (pagerSize في hugo.toml) */}}
+  {{- $pager := .Paginate .Pages }}
+  {{- with $pager.Pages }}
+  <div class="stream">
+    {{- range . }}
+    {{ partial "note.html" (dict "page" . "heading" "h2") }}
+    {{- end }}
+  </div>
+  {{- else }}
+  <p class="empty">لا توجد هوامش بعد. أضف أول هامش في مجلد <code>content/notes</code>.</p>
+  {{- end }}
+  {{- if or $pager.HasPrev $pager.HasNext }}
+  <nav class="pager" aria-label="صفحات {{ .Title }}">
+    {{- with $pager.Prev }}
+    <a class="pager__newer" href="{{ .URL }}">الأحدث</a>
+    {{- end }}
+    {{- with $pager.Next }}
+    <a class="pager__older" href="{{ .URL }}">الأقدم</a>
+    {{- end }}
+  </nav>
+  {{- end }}
+{{- else }}
+  {{- /* التدوينات: عناوين مرتبة حسب السنة */}}
+  {{- range .Pages.GroupByDate "2006" }}
+  <section class="year" aria-labelledby="year-{{ .Key }}">
+    <h2 class="year__heading" id="year-{{ .Key }}">{{ partial "digits.html" .Key }}</h2>
+    <ul class="entries">
+      {{- range .Pages }}
+      {{ partial "entry.html" . }}
+      {{- end }}
+    </ul>
+  </section>
+  {{- else }}
+  <p class="empty">لا توجد تدوينات هنا بعد.</p>
+  {{- end }}
+{{- end }}
+{{ end }}

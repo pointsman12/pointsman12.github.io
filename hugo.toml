@@ -1,0 +1,88 @@
+# إعدادات المدونة
+# عدّل النص الذي بين علامتي التنصيص فقط، واحفظ.
+
+# رابط الموقع يُضبط تلقائيًا عند النشر على GitHub Pages، فلا حاجة لتغييره.
+baseURL = "https://example.org/"
+
+# اسم المدونة كما يظهر في أعلى كل صفحة.
+title = "مدونتي"
+
+locale = "ar"
+defaultContentLanguage = "ar"
+timeZone = "Asia/Riyadh"
+
+# تُنشر الكتابة فور رفعها حتى لو كتبت لها تاريخًا لاحقًا.
+buildFuture = true
+
+# أقل عدد كلمات للمقتطف الذي يظهر من أحدث تدوينة، ومن الهوامش الطويلة.
+summaryLength = 40
+
+enableRobotsTXT = true
+
+[pagination]
+  # عدد الهوامش في كل صفحة من صفحات «هوامش».
+  pagerSize = 20
+
+[params]
+  # اسمك كما يظهر في أسفل الموقع.
+  author = "اسمك"
+
+  # سطر يعرّف بالمدونة تحت اسمها في الصفحة الرئيسية، ويظهر في نتائج البحث.
+  description = "هنا أكتب عمّا أقرأ وأفكر فيه."
+
+  # بريدك ليظهر رابط «راسلني» في أسفل الموقع. اتركه فارغًا لإخفائه.
+  email = ""
+
+  # true: الأرقام بالشكل ١٢٣ — false: الأرقام بالشكل 123
+  arabic_digits = true
+
+  # خطوط الموقع:
+  # modern = معاصر (عناوين بخط Alexandria ونص بخط Noto Naskh Arabic)
+  # book   = كتابي (خط Amiri للعناوين والنص)
+  # simple = بسيط  (خط IBM Plex Sans Arabic للعناوين والنص)
+  # system = خط جهاز القارئ، بلا تحميل خطوط
+  fonts = "book"
+
+  # الصورة التي تظهر عند مشاركة روابط المدونة، من مجلد static/images.
+  # ولأي تدوينة صورة خاصة بها: أضف في رأسها سطر image: "اسم-الصورة.jpg"
+  share_image = "share.png"
+
+  # روابط قنواتك وحساباتك، تظهر في أسفل الموقع وآخر كل تدوينة. اتركها فارغة لإخفائها.
+  telegram = ""  # مثل: https://t.me/channel
+  whatsapp = ""  # رابط قناة واتساب
+  x = ""         # مثل: https://x.com/username
+
+  # رمز التحقق من Google Search Console (طريقة HTML tag): الصق القيمة التي بين علامتي التنصيص بعد content
+  google_verification = ""
+
+# روابط القائمة في أعلى الموقع، مرتبة حسب weight.
+[[menus.main]]
+  name = "التدوينات"
+  pageRef = "/posts"
+  weight = 10
+
+[[menus.main]]
+  name = "هوامش"
+  pageRef = "/notes"
+  weight = 20
+
+[[menus.main]]
+  name = "عنّي"
+  pageRef = "/about"
+  weight = 30
+
+[taxonomies]
+  tag = "tags"
+
+# علامات التنصيص "هكذا" تتحول تلقائيًا إلى «هكذا».
+[markup.goldmark.extensions.typographer]
+  leftDoubleQuote = "&laquo;"
+  rightDoubleQuote = "&raquo;"
+
+# سهم العودة من الحاشية باتجاه يناسب العربية.
+[markup.goldmark.extensions.footnote]
+  backlinkHTML = "&#x21aa;&#xfe0e;"
+
+# يحوّل الروابط بين التدوينات (ومنها الروابط القادمة من Obsidian) إلى روابطها في الموقع.
+[markup.goldmark.renderHooks.link]
+  useEmbedded = "always"

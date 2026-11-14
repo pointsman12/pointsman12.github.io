@@ -1,0 +1,14 @@
+{{ define "main" }}
+<header class="page__header">
+  <h1>{{ .Title }}</h1>
+</header>
+{{- with .Pages }}
+<ul class="tag-index">
+  {{- range . }}
+  <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a><span class="tag-index__count">{{ partial "digits.html" (len .Pages) }}</span></li>
+  {{- end }}
+</ul>
+{{- else }}
+<p class="empty">لا توجد وسوم بعد. أضف سطر <code>tags</code> في أي تدوينة.</p>
+{{- end }}
+{{ end }}
